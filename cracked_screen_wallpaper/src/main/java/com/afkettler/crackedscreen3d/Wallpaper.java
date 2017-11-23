@@ -57,15 +57,15 @@ public class Wallpaper extends gb {
         }
 
         public void onVisibilityChanged(boolean z) {
-            if (z) {
-                try {
-                    registerReceiver(this.f420a,
-                            new IntentFilter("android.intent.action.BATTERY_CHANGED"));
-                } catch (Exception ignore) {
-                }
-            } else {
-                unregisterReceiver(this.f420a);
-            }
+//            if (z) {
+//                try {
+//                    registerReceiver(this.f420a,
+//                            new IntentFilter("android.intent.action.BATTERY_CHANGED"));
+//                } catch (Exception ignore) {
+//                }
+//            } else {
+//                unregisterReceiver(this.f420a);
+//            }
             super.onVisibilityChanged(z);
         }
     }

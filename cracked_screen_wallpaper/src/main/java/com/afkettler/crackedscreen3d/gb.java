@@ -44,7 +44,7 @@ public class gb extends WallpaperService {
             super.onCreate(surfaceHolder);
             this.f419b = isPreview();
             this.f415a = new XModGLViewLink();
-            this.f416a = new XModWallpaper$GLEngine$1(this, getApplicationContext());
+            this.f416a = new XModWallpaperGLEngine(this, getApplicationContext());
             this.f416a.nativeReference = this.f416a.nativeCreate(f283a);
             this.f414a = new GLESThread(this.f415a);
         }
@@ -69,17 +69,17 @@ public class gb extends WallpaperService {
 
         public void onSurfaceChanged(SurfaceHolder surfaceHolder, int i, int i2, int i3) {
             super.onSurfaceChanged(surfaceHolder, i, i2, i3);
-            this.f414a.m481a(surfaceHolder, i, i2, i3);
+            this.f414a.surfaceChanged(surfaceHolder, i, i2, i3);
         }
 
         public void onSurfaceCreated(SurfaceHolder surfaceHolder) {
             super.onSurfaceCreated(surfaceHolder);
-            this.f414a.m480a(surfaceHolder);
+            this.f414a.surfaceCreated(surfaceHolder);
         }
 
         public void onSurfaceDestroyed(SurfaceHolder surfaceHolder) {
             super.onSurfaceDestroyed(surfaceHolder);
-            this.f414a.m483b();
+            this.f414a.surfaceDestroyed();
         }
 
         public void onTouchEvent(MotionEvent motionEvent) {
@@ -98,10 +98,10 @@ public class gb extends WallpaperService {
                     if (this.f416a.nativeReference != 0) {
                         this.f416a.nativeResume(this.f416a.nativeReference);
                     }
-                    this.f414a.m479a();
+                    this.f414a.startRendering();
                 }
             } else if (this.f416a != null) {
-                this.f414a.m485c();
+                this.f414a.pauseRendering();
                 if (this.f416a.nativeReference != 0) {
                     this.f416a.nativePause(this.f416a.nativeReference);
                 }
@@ -109,10 +109,10 @@ public class gb extends WallpaperService {
         }
     }
 
-    public class XModWallpaper$GLEngine$1 extends XModWindowLink {
+    public class XModWallpaperGLEngine extends XModWindowLink {
         final /* synthetic */ gc f300a;
 
-        public XModWallpaper$GLEngine$1(gc gcVar, Context context) {
+        public XModWallpaperGLEngine(gc gcVar, Context context) {
             super(context);
             this.f300a = gcVar;
         }

@@ -12,13 +12,13 @@ import javax.microedition.khronos.opengles.GL10;
 public class XModGLViewLink implements OnTouchListener, ga {
     public long nativeReference = 0;
 
-    public void mo56a(GL10 gl10) {
+    public void onDestroy(GL10 gl10) {
         if (this.nativeReference != 0) {
             nativeOnSurfaceDestroyed(this.nativeReference);
         }
     }
 
-    public void mo57a(GL10 gl10, int i, int i2) {
+    public void onResize(GL10 gl10, int i, int i2) {
         if (this.nativeReference != 0) {
             nativeOnSurfaceChanged(this.nativeReference, i, i2);
         }

@@ -7,7 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.doctorkettlers.xmas.Wallpaper;
+import com.afkettler.crackedscreen3d.Wallpaper;
+
+//import com.doctorkettlers.autumn.Wallpaper;
 
 
 public class MainActivity extends AppCompatActivity {

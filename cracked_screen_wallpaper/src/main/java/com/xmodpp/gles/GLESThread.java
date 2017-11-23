@@ -16,23 +16,23 @@ import java.io.InputStream;
 import javax.microedition.khronos.opengles.GL10;
 
 public class GLESThread {
-    static int f289a = 0;
-    private Handler f290a;
-    private HandlerThread f291a;
-    private fu f292a;
+    static int threadNr = 0;
+    private Handler _handler;
+    private HandlerThread _handlerThread;
+    private EGLHelper _eglHelper;
     private ga f293a;
     public Runnable f294a = new fv(this);
     private GL10 f295a;
-    private boolean f296a = false;
-    private boolean f297b = false;
+    private boolean _running = false;
+    private boolean _surfaceValid = false;
 
     public GLESThread(ga gaVar) {
-        f289a++;
-        this.f292a = new fu();
+        threadNr++;
+        this._eglHelper = new EGLHelper();
         this.f293a = gaVar;
-        this.f291a = new HandlerThread("GLESThread" + f289a);
-        this.f291a.start();
-        this.f290a = new Handler(this.f291a.getLooper());
+        this._handlerThread = new HandlerThread("GLESThread" + threadNr);
+        this._handlerThread.start();
+        this._handler = new Handler(this._handlerThread.getLooper());
     }
 
     private static boolean m476a(String str) {
@@ -69,43 +69,43 @@ public class GLESThread {
     }
 
     public void m479a() {
-        Looper looper = this.f291a.getLooper();
+        Looper looper = this._handlerThread.getLooper();
         if (looper != null) {
             looper.quit();
         }
         try {
-            this.f291a.join();
+            this._handlerThread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    public synchronized void m480a(SurfaceHolder surfaceHolder) {
-        this.f290a.post(new fw(this, surfaceHolder));
-        fz fzVar = new fz(this);
-        this.f290a.post(fzVar);
+    public synchronized void surfaceCreated(SurfaceHolder surfaceHolder) {
+        this._handler.post(new fw(this, surfaceHolder));
+        Barrier barrier = new Barrier(this);
+        this._handler.post(barrier);
         try {
-            fzVar.m859a();
+            barrier.m859a();
         } catch (InterruptedException e) {
         }
     }
 
-    public synchronized void m481a(SurfaceHolder surfaceHolder, int i, int i2, int i3) {
-        this.f290a.post(new fx(this, surfaceHolder, i2, i3));
-        fz fzVar = new fz(this);
-        this.f290a.post(fzVar);
+    public synchronized void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i2, int i3) {
+        this._handler.post(new fx(this, surfaceHolder, i2, i3));
+        Barrier barrier = new Barrier(this);
+        this._handler.post(barrier);
         try {
-            fzVar.m859a();
+            barrier.m859a();
         } catch (InterruptedException e) {
         }
     }
 
-    public synchronized boolean m482a() {
+    public synchronized boolean startRendering() {
         boolean z = true;
         synchronized (this) {
-            if (this.f297b) {
-                this.f296a = true;
-                this.f290a.post(this.f294a);
+            if (this._surfaceValid) {
+                this._running = true;
+                this._handler.post(this.f294a);
             } else {
                 z = false;
             }
@@ -113,26 +113,26 @@ public class GLESThread {
         return z;
     }
 
-    public synchronized void m483b() {
-        this.f290a.removeCallbacksAndMessages(null);
-        this.f290a.post(new fy(this));
-        fz fzVar = new fz(this);
-        this.f290a.post(fzVar);
+    public synchronized void surfaceDestroyed() {
+        this._handler.removeCallbacksAndMessages(null);
+        this._handler.post(new fy(this));
+        Barrier barrier = new Barrier(this);
+        this._handler.post(barrier);
         try {
-            fzVar.m859a();
+            barrier.m859a();
         } catch (InterruptedException e) {
         }
-        this.f296a = false;
-        this.f290a.removeCallbacksAndMessages(null);
+        this._running = false;
+        this._handler.removeCallbacksAndMessages(null);
     }
 
-    public boolean m484b() {
-        return this.f297b;
+    public boolean isSurfaceValid() {
+        return this._surfaceValid;
     }
 
-    public synchronized void m485c() {
-        this.f296a = false;
-        this.f290a.removeCallbacksAndMessages(null);
+    public synchronized void pauseRendering() {
+        this._running = false;
+        this._handler.removeCallbacksAndMessages(null);
     }
 
     public class fv implements Runnable {
@@ -143,62 +143,62 @@ public class GLESThread {
         }
 
         public void run() {
-            if (this.f428a.m482a()) {
+            if (this.f428a._surfaceValid) {
                 this.f428a.f293a.mo59b(this.f428a.f295a);
-                if (this.f428a.f296a) {
-                    this.f428a.f290a.removeCallbacks(this.f428a.f294a);
-                    this.f428a.f290a.postDelayed(this.f428a.f294a, 10);
+                if (this.f428a._running) {
+                    this.f428a._handler.removeCallbacks(this.f428a.f294a);
+                    this.f428a._handler.postDelayed(this.f428a.f294a, 10);
                 }
-                this.f428a.f292a.onDrawFrame();
+                this.f428a._eglHelper.onDrawFrame();
             }
         }
     }
 
     public class fw implements Runnable {
-        private final /* synthetic */ SurfaceHolder f429a;
+        private final /* synthetic */ SurfaceHolder holder;
         final /* synthetic */ GLESThread f430a;
 
         public fw(GLESThread gLESThread, SurfaceHolder surfaceHolder) {
             this.f430a = gLESThread;
-            this.f429a = surfaceHolder;
+            this.holder = surfaceHolder;
         }
 
         public void run() {
             try {
-                this.f430a.f292a.m856a(8, 8, 8, 8, 16, 0);
-                this.f430a.f295a = this.f430a.f292a.m855a(this.f429a);
-                this.f430a.f293a.mo58a(this.f430a.f295a, this.f430a.f292a.f424a);
-                this.f430a.f297b = true;
+                this.f430a._eglHelper.initialize(8, 8, 8, 8, 16, 0);
+                this.f430a.f295a = this.f430a._eglHelper.createSurface(this.holder);
+                this.f430a.f293a.mo58a(this.f430a.f295a, this.f430a._eglHelper.f424a);
+                this.f430a._surfaceValid = true;
             } catch (Exception e) {
-                this.f430a.f297b = false;
-                this.f430a.f296a = false;
+                this.f430a._surfaceValid = false;
+                this.f430a._running = false;
             }
         }
     }
 
 
     public class fx implements Runnable {
-        private final /* synthetic */ int f431a;
-        private final /* synthetic */ SurfaceHolder f432a;
+        private final /* synthetic */ int width;
+        private final /* synthetic */ SurfaceHolder holder;
         final /* synthetic */ GLESThread f433a;
-        private final /* synthetic */ int f434b;
+        private final /* synthetic */ int height;
 
         public fx(GLESThread gLESThread, SurfaceHolder surfaceHolder, int i, int i2) {
             this.f433a = gLESThread;
-            this.f432a = surfaceHolder;
-            this.f431a = i;
-            this.f434b = i2;
+            this.holder = surfaceHolder;
+            this.width = i;
+            this.height = i2;
         }
 
         public void run() {
             try {
-                this.f433a.f292a.m855a(this.f432a);
-                this.f433a.f293a.mo57a(this.f433a.f295a, this.f431a, this.f434b);
-                this.f433a.f297b = true;
-                this.f433a.f296a = true;
+                this.f433a._eglHelper.createSurface(this.holder);
+                this.f433a.f293a.onResize(this.f433a.f295a, this.width, this.height);
+                this.f433a._surfaceValid = true;
+                this.f433a._running = true;
             } catch (Exception e) {
-                this.f433a.f297b = false;
-                this.f433a.f296a = false;
+                this.f433a._surfaceValid = false;
+                this.f433a._running = false;
             }
         }
     }
@@ -211,18 +211,18 @@ public class GLESThread {
         }
 
         public void run() {
-            this.f435a.f293a.mo56a(this.f435a.f295a);
-            this.f435a.f292a.m857a(this.f435a.f292a.f423a, this.f435a.f292a.f426a, this.f435a.f292a.f427a);
-            this.f435a.f297b = false;
+            this.f435a.f293a.onDestroy(this.f435a.f295a);
+            this.f435a._eglHelper.destroySurface(this.f435a._eglHelper.mEgl, this.f435a._eglHelper.mEglDisplay, this.f435a._eglHelper.mEglSurface);
+            this.f435a._surfaceValid = false;
         }
     }
 
 
-    public class fz implements Runnable {
+    public class Barrier implements Runnable {
         final /* synthetic */ GLESThread f436a;
         public boolean f437a = false;
 
-        public fz(GLESThread gLESThread) {
+        public Barrier(GLESThread gLESThread) {
             this.f436a = gLESThread;
         }
 

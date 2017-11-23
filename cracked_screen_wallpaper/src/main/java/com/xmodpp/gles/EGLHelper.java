@@ -8,12 +8,12 @@ import javax.microedition.khronos.egl.EGLDisplay;
 import javax.microedition.khronos.egl.EGLSurface;
 import javax.microedition.khronos.opengles.GL10;
 
-public class fu {
-    EGL10 f423a;
+public class EGLHelper {
+    EGL10 mEgl;
     EGLConfig f424a;
     EGLContext f425a;
-    EGLDisplay f426a;
-    EGLSurface f427a;
+    EGLDisplay mEglDisplay;
+    EGLSurface mEglSurface;
 
     private int m852a(EGL10 egl10, EGLDisplay eGLDisplay, EGLConfig eGLConfig, int i, int i2) {
         int[] iArr = new int[1];
@@ -81,51 +81,51 @@ public class fu {
         return eGLSurface;
     }
 
-    public GL10 m855a(SurfaceHolder surfaceHolder) {
-        if (!(this.f427a == null || this.f427a == EGL10.EGL_NO_SURFACE)) {
-            this.f423a.eglMakeCurrent(this.f426a, EGL10.EGL_NO_SURFACE, EGL10.EGL_NO_SURFACE, EGL10.EGL_NO_CONTEXT);
-            m857a(this.f423a, this.f426a, this.f427a);
+    public GL10 createSurface(SurfaceHolder surfaceHolder) {
+        if (!(this.mEglSurface == null || this.mEglSurface == EGL10.EGL_NO_SURFACE)) {
+            this.mEgl.eglMakeCurrent(this.mEglDisplay, EGL10.EGL_NO_SURFACE, EGL10.EGL_NO_SURFACE, EGL10.EGL_NO_CONTEXT);
+            destroySurface(this.mEgl, this.mEglDisplay, this.mEglSurface);
         }
-        this.f427a = m854a(this.f423a, this.f426a, this.f424a, surfaceHolder);
-        if (this.f427a == null || this.f427a == EGL10.EGL_NO_SURFACE) {
+        this.mEglSurface = m854a(this.mEgl, this.mEglDisplay, this.f424a, surfaceHolder);
+        if (this.mEglSurface == null || this.mEglSurface == EGL10.EGL_NO_SURFACE) {
             throw new RuntimeException("createWindowSurface failed");
-        } else if (this.f423a.eglMakeCurrent(this.f426a, this.f427a, this.f427a, this.f425a)) {
+        } else if (this.mEgl.eglMakeCurrent(this.mEglDisplay, this.mEglSurface, this.mEglSurface, this.f425a)) {
             return (GL10) this.f425a.getGL();
         } else {
             throw new RuntimeException("eglMakeCurrent failed.");
         }
     }
 
-    public void m856a(int i, int i2, int i3, int i4, int i5, int i6) {
-        if (this.f423a == null) {
-            this.f423a = (EGL10) EGLContext.getEGL();
+    public void initialize(int i, int i2, int i3, int i4, int i5, int i6) {
+        if (this.mEgl == null) {
+            this.mEgl = (EGL10) EGLContext.getEGL();
         }
-        if (this.f426a == null) {
-            this.f426a = this.f423a.eglGetDisplay(EGL10.EGL_DEFAULT_DISPLAY);
+        if (this.mEglDisplay == null) {
+            this.mEglDisplay = this.mEgl.eglGetDisplay(EGL10.EGL_DEFAULT_DISPLAY);
         }
         if (this.f424a == null) {
-            this.f423a.eglInitialize(this.f426a, new int[2]);
-            this.f424a = m853a(this.f423a, this.f426a, i, i2, i3, i4, i5, i6);
+            this.mEgl.eglInitialize(this.mEglDisplay, new int[2]);
+            this.f424a = m853a(this.mEgl, this.mEglDisplay, i, i2, i3, i4, i5, i6);
         }
         if (this.f425a == null) {
-            this.f425a = this.f423a.eglCreateContext(this.f426a, this.f424a, EGL10.EGL_NO_CONTEXT, new int[]{12440, 2, 12344});
+            this.f425a = this.mEgl.eglCreateContext(this.mEglDisplay, this.f424a, EGL10.EGL_NO_CONTEXT, new int[]{12440, 2, 12344});
             if (this.f425a == null || this.f425a == EGL10.EGL_NO_CONTEXT) {
                 throw new RuntimeException("createContext failed");
             }
         }
-        this.f427a = null;
+        this.mEglSurface = null;
     }
 
-    public void m857a(EGL10 egl10, EGLDisplay eGLDisplay, EGLSurface eGLSurface) {
-        if (this.f427a != null && this.f427a != EGL10.EGL_NO_SURFACE) {
-            this.f423a.eglMakeCurrent(this.f426a, EGL10.EGL_NO_SURFACE, EGL10.EGL_NO_SURFACE, EGL10.EGL_NO_CONTEXT);
-            egl10.eglDestroySurface(this.f426a, this.f427a);
-            this.f427a = null;
+    public void destroySurface(EGL10 egl10, EGLDisplay eGLDisplay, EGLSurface eGLSurface) {
+        if (this.mEglSurface != null && this.mEglSurface != EGL10.EGL_NO_SURFACE) {
+            this.mEgl.eglMakeCurrent(this.mEglDisplay, EGL10.EGL_NO_SURFACE, EGL10.EGL_NO_SURFACE, EGL10.EGL_NO_CONTEXT);
+            egl10.eglDestroySurface(this.mEglDisplay, this.mEglSurface);
+            this.mEglSurface = null;
         }
     }
 
     public boolean onDrawFrame() {
-        this.f423a.eglSwapBuffers(this.f426a, this.f427a);
-        return this.f423a.eglGetError() != 12302;
+        this.mEgl.eglSwapBuffers(this.mEglDisplay, this.mEglSurface);
+        return this.mEgl.eglGetError() != 12302;
     }
 }
