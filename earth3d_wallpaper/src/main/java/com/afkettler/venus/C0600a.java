@@ -1,4 +1,4 @@
-package com.afkettler.earth;
+package com.afkettler.venus;
 
 import android.annotation.TargetApi;
 import com.xmodpp.addons.wallpaper.XMODWallpaperService;

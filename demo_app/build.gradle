@@ -30,6 +30,9 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     compile "com.kinglloy.style.developer:style-component-sdk:$DEVELOP_SDK_VERSION"
-    compile project(':earth3d_wallpaper')
+//    compile project(':earth3d_wallpaper')
+//    compile project(':venus3d_wallpaper')
+//    compile project(':cracked_screen_wallpaper')
+    compile project(':christmas_wallpaper')
     testCompile 'junit:junit:4.12'
 }

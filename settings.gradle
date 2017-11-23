@@ -1,1 +1,1 @@
-include ':app_wrapper', ':earth3d_wallpaper', ':demo_app'
+include ':app_wrapper', ':earth3d_wallpaper', ':demo_app', ':venus3d_wallpaper', ':cracked_screen_wallpaper', ':christmas_wallpaper'

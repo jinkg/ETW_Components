@@ -3,7 +3,7 @@ package com.kinglloy.wallpaper.earth_3d;
 import android.content.Context;
 import android.service.wallpaper.WallpaperService;
 
-import com.afkettler.earth.Wallpaper;
+import com.afkettler.venus.Wallpaper;
 import com.yalin.style.engine.IProvider;
 
 /**

@@ -1,4 +1,4 @@
-package com.afkettler.earth;
+package com.afkettler.venus;
 
 import android.content.Context;
 import android.os.Build.VERSION;
