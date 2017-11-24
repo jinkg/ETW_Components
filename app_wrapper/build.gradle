@@ -22,8 +22,8 @@ android {
 }
 
 dependencies {
-//    compile project(':earth3d_wallpaper')
+    compile project(':earth3d_wallpaper')
 //    compile project(':venus3d_wallpaper')
 //    compile project(':christmas_wallpaper')
-    compile project(':autumnleaves_wallpaper')
+//    compile project(':autumnleaves_wallpaper')
 }

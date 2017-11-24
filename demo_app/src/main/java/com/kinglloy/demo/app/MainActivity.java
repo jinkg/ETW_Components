@@ -6,10 +6,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-
-import com.afkettler.crackedscreen3d.Wallpaper;
-
-//import com.doctorkettlers.autumn.Wallpaper;
+import com.afkettler.earth.Wallpaper;
 
 
 public class MainActivity extends AppCompatActivity {
