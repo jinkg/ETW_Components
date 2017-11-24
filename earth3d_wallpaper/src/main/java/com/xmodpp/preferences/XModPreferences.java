@@ -1,6 +1,7 @@
 package com.xmodpp.preferences;
 
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 import android.util.Log;
 
 public class XModPreferences {
@@ -20,7 +21,11 @@ public class XModPreferences {
 
   public boolean jni_getBoolean(String str, boolean z) {
     Log.d(TAG, "jni_getBoolean: " + str + "=" + z);
-    return z;
+    if (TextUtils.isEmpty(str)) {
+      return true;
+    } else {
+      return z;
+    }
   }
 
   public float jni_getFloat(String str, float f) {
@@ -30,7 +35,17 @@ public class XModPreferences {
 
   public int jni_getInt(String str, int i) {
     Log.d(TAG, "jni_getInt: " + str + "=" + i);
-    return i;
+    if (TextUtils.equals(str, "view")) {
+      return 1;
+    } else if (TextUtils.equals(str, "anim")) {
+      return 2;
+    } else if (TextUtils.equals(str, "texres_all")) {
+      return 0;
+    } else if (TextUtils.isEmpty(str)) {
+      return 1;
+    } else {
+      return i;
+    }
   }
 
   public long jni_getLong(String str, long j) {
