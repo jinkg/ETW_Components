@@ -7,6 +7,6 @@
 
 -keep class * implements com.yalin.style.engine.IProvider
 
--keep class com.com.xmodpp.**{
+-keep class com.xmodpp.**{
     *;
 }
