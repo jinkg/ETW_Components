@@ -2,7 +2,6 @@ package com.xmodpp.nativeui;
 
 import android.content.Context;
 import android.content.res.Configuration;
-import android.service.wallpaper.WallpaperService;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 

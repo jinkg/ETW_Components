@@ -12,10 +12,6 @@ public class App {
 
     public static native void SetLicensed();
 
-    public static int m20001a() {
-        return ((WindowManager) jni_context.getSystemService("window")).getDefaultDisplay().getRotation();
-    }
-
     public static synchronized void m20002a(Context context) {
         synchronized (App.class) {
             jni_context = context;
