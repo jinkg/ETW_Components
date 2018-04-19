@@ -22,10 +22,12 @@ android {
 }
 
 dependencies {
-    compile project(':spring3d_02_wallpaper')
+//    compile project(':cracked_screen_wallpaper')
+//    compile project(':spring3d_02_wallpaper')
 //    compile project(':nature3d_wallpaper')
 //    compile project(':earth3d_wallpaper')
 //    compile project(':venus3d_wallpaper')
 //    compile project(':christmas_wallpaper')
 //    compile project(':autumnleaves_wallpaper')
+    compile project(':mars3d_pro_wallpaper')
 }

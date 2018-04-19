@@ -31,10 +31,11 @@ dependencies {
 
     compile "com.kinglloy.style.developer:style-component-sdk:$DEVELOP_SDK_VERSION"
 //    compile project(':earth3d_wallpaper')
-    compile project(':earth3d_pro_wallpaper')
+//    compile project(':earth3d_pro_wallpaper')
 //    compile project(':venus3d_wallpaper')
 //    compile project(':cracked_screen_wallpaper')
 //    compile project(':christmas_wallpaper')
 //    compile project(':autumnleaves_wallpaper')
+    compile project(':mars3d_pro_wallpaper')
     testCompile 'junit:junit:4.12'
 }
