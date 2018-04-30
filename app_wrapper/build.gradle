@@ -30,5 +30,6 @@ dependencies {
 //    compile project(':christmas_wallpaper')
 //    compile project(':autumnleaves_wallpaper')
 //    compile project(':mars3d_pro_wallpaper')
-    compile project(':rose3d_wallpaper')
+//    compile project(':rose3d_wallpaper')
+    compile project(':galaxy_wallpaper')
 }
