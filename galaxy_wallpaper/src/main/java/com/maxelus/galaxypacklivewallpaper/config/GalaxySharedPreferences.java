@@ -27,6 +27,8 @@ public class GalaxySharedPreferences implements SharedPreferences {
     public String getString(String key, String defValue) {
         if (TextUtils.equals(key, "galaxy_pref")) {
             return GalaxyConfig.galaxyType + "";
+        } else if (TextUtils.equals(key, "galaxy_back_pref")) {
+            return GalaxyConfig.galaxyBg + "";
         }
         String result = defValue;
         if (mMap.containsKey(key)) {

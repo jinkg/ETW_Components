@@ -8,4 +8,7 @@ package com.maxelus.galaxypacklivewallpaper.config;
 public class GalaxyConfig {
     // 0 ~ 24
     public static int galaxyType = 23;
+
+    //0 ~ 4
+    public static int galaxyBg = 0;
 }
