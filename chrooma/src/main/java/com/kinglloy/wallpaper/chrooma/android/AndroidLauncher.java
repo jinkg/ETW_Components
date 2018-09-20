@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Log;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.badlogic.gdx.backends.android.AndroidLiveWallpaperService;
 import com.kinglloy.wallpaper.chrooma.ActionResolver;
 import com.kinglloy.wallpaper.chrooma.ChroomaLWP;
 import com.kinglloy.wallpaper.chrooma.GamePreferences;
@@ -31,7 +30,7 @@ public class AndroidLauncher extends GDXWallpaperServiceProxy implements ActionR
     }
 
     public Engine onCreateEngine() {
-        return new AndroidWallpaperEngine() {
+        return new GDXActiveEngine() {
             public void onPause() {
                 super.onPause();
                 GamePreferences.instance.saveCurrentTime(System.currentTimeMillis());
