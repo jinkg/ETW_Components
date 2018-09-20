@@ -32,5 +32,6 @@ dependencies {
 //    compile project(':mars3d_pro_wallpaper')
 //    compile project(':rose3d_wallpaper')
 //    compile project(':galaxy_wallpaper')
-    compile project(':car_wallpaper')
+//    compile project(':car_wallpaper')
+    implementation project(':chrooma')
 }
